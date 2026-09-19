@@ -152,7 +152,10 @@ class FoodNotificationService {
     }
   }
 
-  /// App icon on the notification; food photo only in the expanded picture.
+  /// App icon = small notification icon (from initialize @mipmap/ic_launcher).
+  /// Do NOT set largeIcon to a drawable name — 'ic_launcher' lives in mipmap
+  /// and caused: PlatformException(invalid_large_icon).
+  /// Food photo only in BigPictureStyleInformation (letterboxed / fit).
   static NotificationDetails _details({
     String? foodPicturePath,
     required String title,
@@ -165,14 +168,12 @@ class FoodNotificationService {
             channelDescription: _channelDesc,
             importance: Importance.high,
             priority: Priority.high,
-            // Keep app logo as the notification icon.
+            // Small icon = app logo (mipmap via AndroidInitializationSettings).
             icon: '@mipmap/ic_launcher',
-            largeIcon: const DrawableResourceAndroidBitmap('ic_launcher'),
             styleInformation: BigPictureStyleInformation(
               FilePathAndroidBitmap(foodPicturePath),
               contentTitle: title,
               summaryText: body,
-              // Do not put food photo in largeIcon — that caused mismatch UI.
               hideExpandedLargeIcon: true,
             ),
           )
@@ -201,11 +202,13 @@ class FoodNotificationService {
     );
   }
 
-  /// Unique cache key per URL (old code used first 40 chars → all milk.png).
+  /// Unique cache key per URL — never throws (hash may be short/negative).
   static String _cacheKeyFor(String url) {
-    final file = url.split('/').last.replaceAll(RegExp(r'[^A-Za-z0-9]'), '_');
-    final hash = url.hashCode.toRadixString(16);
-    return '${file}_$hash'.substring(0, (file.length + 10).clamp(8, 80));
+    final last = url.split('/').last;
+    final file = last.replaceAll(RegExp(r'[^A-Za-z0-9]'), '_');
+    final hex = url.hashCode.abs().toRadixString(16);
+    // e.g. Walnuts_png_5f3a91c
+    return '${file}_$hex';
   }
 
   /// Download + letterbox on white square → photo is FIT (not cropped).
@@ -293,8 +296,13 @@ class FoodNotificationService {
       final day = DateTime(fire.year, fire.month, fire.day);
       final tip = FoodTips.tipForDate(day);
       final id = _baseId + d;
-      // Image is fetched **from this tip's URL only**.
-      final path = await _downloadImage(tip.imageUrl);
+      String? path;
+      try {
+        path = await _downloadImage(tip.imageUrl);
+      } catch (e) {
+        debugPrint('schedule image fail $e');
+        path = null;
+      }
       final title = tip.title;
       final body = tip.body;
 

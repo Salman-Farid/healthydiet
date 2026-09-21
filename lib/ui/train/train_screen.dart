@@ -161,7 +161,7 @@ class _TrainCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: color.withOpacity(0.45)),
+          border: Border.all(color: color.withValues(alpha: 0.45)),
         ),
         child: Row(
           children: [
@@ -170,7 +170,7 @@ class _TrainCard extends StatelessWidget {
               height: 52,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: color.withOpacity(0.15),
+                color: color.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Text(emoji, style: const TextStyle(fontSize: 26)),

@@ -119,3 +119,44 @@ class HeroNetworkImage extends StatelessWidget {
     );
   }
 }
+
+/// Emoji fallback for food catalog cards by organ slug.
+String foodGoalEmoji(String slug) {
+  switch (slug.toLowerCase()) {
+    case 'brain':
+      return '🧠';
+    case 'heart':
+      return '❤️';
+    case 'lungs':
+      return '🫁';
+    case 'kidneys':
+      return '🫘';
+    case 'liver':
+      return '🫀';
+    case 'bones':
+      return '🦴';
+    case 'eyes':
+      return '👁️';
+    case 'teeth':
+      return '🦷';
+    case 'blood':
+      return '🩸';
+    case 'skin':
+      return '✨';
+    case 'hair':
+      return '💇';
+    case 'muscles':
+    case 'muscle':
+      return '💪';
+    case 'immunity':
+      return '🛡️';
+    case 'stomach':
+      return '🍽️';
+    case 'gut':
+      return '🦠';
+    case 'joints':
+      return '🦴';
+    default:
+      return '🍎';
+  }
+}

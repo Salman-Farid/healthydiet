@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -64,7 +63,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
               url: url,
               height: 280,
               fit: BoxFit.contain,
-              fallbackEmoji: food.emoji,
+              fallbackEmoji: foodGoalEmoji(food.goalSlug),
             ),
           ),
           Padding(
@@ -255,18 +254,4 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
     'sardines':
         'Sardines with soft edible bones are unusually high in calcium and vitamin D, plus omega-3s for heart and brain support.',
   };
-}
-
-class _EmojiFallback extends StatelessWidget {
-  const _EmojiFallback({required this.emoji});
-  final String emoji;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      alignment: Alignment.center,
-      child: Text(emoji, style: const TextStyle(fontSize: 72)),
-    );
-  }
 }

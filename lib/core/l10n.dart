@@ -263,136 +263,45 @@ class AppStrings {
     return _equipment[key]?[l] ?? _equipment[key]?['en'] ?? slug;
   }
 
-  /// Food body-benefit chips (brain, heart, eye, ...).
+  /// Food organ/body-part chips — labels for new catalog.
   static String foodGoalLabel(String slug, String lang) {
     final l = code(lang);
-    return _foodGoals[slug.toLowerCase()]?[l] ??
-        _foodGoals[slug.toLowerCase()]?['en'] ??
-        slug;
+    const organ = <String, Map<String, String>>{
+      'brain': {'en': 'Brain', 'bn': 'মস্তিষ্ক', 'zh': '大脑', 'hi': 'मस्तिष्क', 'ko': '뇌', 'es': 'Cerebro', 'fr': 'Cerveau', 'ru': 'Мозг', 'tr': 'Beyin', 'it': 'Cervello', 'pl': 'Mózg'},
+      'heart': {'en': 'Heart', 'bn': 'হৃদয়', 'zh': '心脏', 'hi': 'हृदय', 'ko': '심장', 'es': 'Corazón', 'fr': 'Cœur', 'ru': 'Сердце', 'tr': 'Kalp', 'it': 'Cuore', 'pl': 'Serce'},
+      'lungs': {'en': 'Lungs', 'bn': 'ফুসফুস', 'zh': '肺', 'hi': 'फेफड़े', 'ko': '폐', 'es': 'Pulmones', 'fr': 'Poumons', 'ru': 'Лёгкие', 'tr': 'Akciğer', 'it': 'Polmoni', 'pl': 'Płuca'},
+      'kidneys': {'en': 'Kidneys', 'bn': 'কিডনি', 'zh': '肾脏', 'hi': 'गुर्दे', 'ko': '신장', 'es': 'Riñones', 'fr': 'Reins', 'ru': 'Почки', 'tr': 'Böbrek', 'it': 'Reni', 'pl': 'Nerki'},
+      'liver': {'en': 'Liver', 'bn': 'যকৃত', 'zh': '肝脏', 'hi': 'जिगर', 'ko': '간', 'es': 'Hígado', 'fr': 'Foie', 'ru': 'Печень', 'tr': 'Karaciğer', 'it': 'Fegato', 'pl': 'Wątroba'},
+      'bones': {'en': 'Bones', 'bn': 'হাড়', 'zh': '骨骼', 'hi': 'हड्डियाँ', 'ko': '뼈', 'es': 'Huesos', 'fr': 'Os', 'ru': 'Кости', 'tr': 'Kemik', 'it': 'Ossa', 'pl': 'Kości'},
+      'eyes': {'en': 'Eyes', 'bn': 'চোখ', 'zh': '眼睛', 'hi': 'आँखें', 'ko': '눈', 'es': 'Ojos', 'fr': 'Yeux', 'ru': 'Глаза', 'tr': 'Göz', 'it': 'Occhi', 'pl': 'Oczy'},
+      'teeth': {'en': 'Teeth & Gums', 'bn': 'দাঁত ও মাড়ি', 'zh': '牙齿', 'hi': 'दाँत', 'ko': '치아', 'es': 'Dientes', 'fr': 'Dents', 'ru': 'Зубы', 'tr': 'Dişler', 'it': 'Denti', 'pl': 'Zęby'},
+      'blood': {'en': 'Blood', 'bn': 'রক্ত', 'zh': '血液', 'hi': 'रक्त', 'ko': '혈액', 'es': 'Sangre', 'fr': 'Sang', 'ru': 'Кровь', 'tr': 'Kan', 'it': 'Sangue', 'pl': 'Krew'},
+      'skin': {'en': 'Skin', 'bn': 'ত্বক', 'zh': '皮肤', 'hi': 'त्वचा', 'ko': '피부', 'es': 'Piel', 'fr': 'Peau', 'ru': 'Кожа', 'tr': 'Cilt', 'it': 'Pelle', 'pl': 'Skóra'},
+      'hair': {'en': 'Hair & Scalp', 'bn': 'চুল ও মাথা', 'zh': '头发', 'hi': 'बाल', 'ko': '모발', 'es': 'Cabello', 'fr': 'Cheveux', 'ru': 'Волосы', 'tr': 'Saç', 'it': 'Capelli', 'pl': 'Włosy'},
+      'muscles': {'en': 'Muscles', 'bn': 'মাংসপেশি', 'zh': '肌肉', 'hi': 'मांसपेशियां', 'ko': '근육', 'es': 'Músculos', 'fr': 'Muscles', 'ru': 'Мышцы', 'tr': 'Kaslar', 'it': 'Muscoli', 'pl': 'Mięśnie'},
+      'immunity': {'en': 'Immune System', 'bn': 'রোগ প্রতিরোধ', 'zh': '免疫', 'hi': 'प्रतिरक्षा', 'ko': '면역', 'es': 'Inmunidad', 'fr': 'Immunité', 'ru': 'Иммунитет', 'tr': 'Bağışıklık', 'it': 'Immunità', 'pl': 'Odporność'},
+      'stomach': {'en': 'Stomach', 'bn': 'পাকস্থলী', 'zh': '胃', 'hi': 'पेट', 'ko': '위', 'es': 'Estómago', 'fr': 'Estomac', 'ru': 'Желудок', 'tr': 'Mide', 'it': 'Stomaco', 'pl': 'Żołądek'},
+      'gut': {'en': 'Gut & Intestines', 'bn': 'অন্ত্র', 'zh': '肠道', 'hi': 'आंत', 'ko': '장', 'es': 'Intestinos', 'fr': 'Intestins', 'ru': 'Кишечник', 'tr': 'Bağırsak', 'it': 'Intestino', 'pl': 'Jelita'},
+      'pancreas': {'en': 'Pancreas', 'bn': 'অগ্ন্যাশয়', 'zh': '胰腺', 'hi': 'अग्न्याशय', 'ko': '췌장', 'es': 'Páncreas', 'fr': 'Pancréas', 'ru': 'Поджелудочная', 'tr': 'Pankreas', 'it': 'Pancreas', 'pl': 'Trzustka'},
+      'thyroid': {'en': 'Thyroid', 'bn': 'থাইরয়েড', 'zh': '甲状腺', 'hi': 'थायरॉइड', 'ko': '갑상선', 'es': 'Tiroides', 'fr': 'Thyroïde', 'ru': 'Щитовидка', 'tr': 'Tiroid', 'it': 'Tiroide', 'pl': 'Tarczyca'},
+      'male': {'en': 'Male Health', 'bn': 'পুরুষ স্বাস্থ্য', 'zh': '男性健康', 'hi': 'पुरुष स्वास्थ्य', 'ko': '남성 건강', 'es': 'Salud masculina', 'fr': 'Santé masculine', 'ru': 'Мужское здоровье', 'tr': 'Erkek sağlığı', 'it': 'Salute maschile', 'pl': 'Zdrowie M'},
+      'female': {'en': 'Female Health', 'bn': 'নারী স্বাস্থ্য', 'zh': '女性健康', 'hi': 'महिला स्वास्थ्य', 'ko': '여성 건강', 'es': 'Salud femenina', 'fr': 'Santé féminine', 'ru': 'Женское здоровье', 'tr': 'Kadın sağlığı', 'it': 'Salute femminile', 'pl': 'Zdrowie K'},
+      'circulation': {'en': 'Circulation', 'bn': 'রক্ত সঞ্চালন', 'zh': '循环', 'hi': 'रक्त परिसंचरण', 'ko': '혈액순환', 'es': 'Circulación', 'fr': 'Circulation', 'ru': 'Кровообращение', 'tr': 'Dolaşım', 'it': 'Circolazione', 'pl': 'Krążenie'},
+      'nervous': {'en': 'Nervous System', 'bn': 'স্নায়ুতন্ত্র', 'zh': '神经系统', 'hi': 'तंत्रिका', 'ko': '신경계', 'es': 'Nervioso', 'fr': 'Nerveux', 'ru': 'Нервы', 'tr': 'Sinir', 'it': 'Nervoso', 'pl': 'Nerwowy'},
+      'ears': {'en': 'Ears / Hearing', 'bn': 'কান / শ্রবণ', 'zh': '耳', 'hi': 'कान', 'ko': '귀', 'es': 'Oídos', 'fr': 'Ouïe', 'ru': 'Уши', 'tr': 'Kulak', 'it': 'Orecchie', 'pl': 'Słuch'},
+      'spleen': {'en': 'Spleen', 'bn': 'প্লীহা', 'zh': '脾', 'hi': 'प्लीहा', 'ko': '비장', 'es': 'Bazo', 'fr': 'Rate', 'ru': 'Селезёнка', 'tr': 'Dalak', 'it': 'Milza', 'pl': 'Śledziona'},
+      'joints': {'en': 'Joints & Cartilage', 'bn': 'জয়েন্ট', 'zh': '关节', 'hi': 'जोड़', 'ko': '관절', 'es': 'Articulaciones', 'fr': 'Articulations', 'ru': 'Суставы', 'tr': 'Eklem', 'it': 'Articolazioni', 'pl': 'Stawy'},
+      'pressure': {'en': 'Blood Pressure', 'bn': 'রক্তচাপ', 'zh': '血压', 'hi': 'रक्तचाप', 'ko': '혈압', 'es': 'Presión', 'fr': 'Tension', 'ru': 'Давление', 'tr': 'Tansiyon', 'it': 'Pressione', 'pl': 'Ciśnienie'},
+      'cellular': {'en': 'Cell Protection', 'bn': 'কোষ সুরক্ষা', 'zh': '细胞', 'hi': 'कोशिका', 'ko': '세포', 'es': 'Celular', 'fr': 'Cellulaire', 'ru': 'Клетки', 'tr': 'Hücre', 'it': 'Cellule', 'pl': 'Komórki'},
+      'eye': {'en': 'Eyes', 'bn': 'চোখ', 'zh': '眼睛', 'hi': 'आँखें', 'ko': '눈', 'es': 'Ojos', 'fr': 'Yeux', 'ru': 'Глаза', 'tr': 'Göz', 'it': 'Occhi', 'pl': 'Oczy'},
+      'muscle': {'en': 'Muscles', 'bn': 'মাংসপেশি', 'zh': '肌肉', 'hi': 'मांसपेशियां', 'ko': '근육', 'es': 'Músculos', 'fr': 'Muscles', 'ru': 'Мышцы', 'tr': 'Kaslar', 'it': 'Muscoli', 'pl': 'Mięśnie'},
+      'digestion': {'en': 'Digestion', 'bn': 'পাচন', 'zh': '消化', 'hi': 'पाचन', 'ko': '소화', 'es': 'Digestión', 'fr': 'Digestion', 'ru': 'Пищеварение', 'tr': 'Sindirim', 'it': 'Digestione', 'pl': 'Trawienie'},
+    };
+    final key = slug.toLowerCase().trim();
+    final row = organ[key];
+    if (row == null) return slug;
+    return row[l] ?? row['en'] ?? slug;
   }
-
-  static const Map<String, Map<String, String>> _foodGoals = {
-    'brain': {
-      'en': 'Brain',
-      'es': 'Cerebro',
-      'it': 'Cervello',
-      'tr': 'Beyin',
-      'ru': 'Мозг',
-      'zh': '大脑',
-      'hi': 'मस्तिष्क',
-      'pl': 'Mózg',
-      'ko': '뇌',
-      'fr': 'Cerveau',
-    },
-    'heart': {
-      'en': 'Heart',
-      'es': 'Corazón',
-      'it': 'Cuore',
-      'tr': 'Kalp',
-      'ru': 'Сердце',
-      'zh': '心脏',
-      'hi': 'हृदय',
-      'pl': 'Serce',
-      'ko': '심장',
-      'fr': 'Cœur',
-    },
-    'eye': {
-      'en': 'Eye',
-      'es': 'Ojos',
-      'it': 'Occhi',
-      'tr': 'Göz',
-      'ru': 'Глаза',
-      'zh': '眼睛',
-      'hi': 'आँखें',
-      'pl': 'Oczy',
-      'ko': '눈',
-      'fr': 'Yeux',
-    },
-    'skin': {
-      'en': 'Skin',
-      'es': 'Piel',
-      'it': 'Pelle',
-      'tr': 'Cilt',
-      'ru': 'Кожа',
-      'zh': '皮肤',
-      'hi': 'त्वचा',
-      'pl': 'Skóra',
-      'ko': '피부',
-      'fr': 'Peau',
-    },
-    'bones': {
-      'en': 'Bones',
-      'es': 'Huesos',
-      'it': 'Ossa',
-      'tr': 'Kemik',
-      'ru': 'Кости',
-      'zh': '骨骼',
-      'hi': 'हड्डियाँ',
-      'pl': 'Kości',
-      'ko': '뼈',
-      'fr': 'Os',
-    },
-    'immunity': {
-      'en': 'Immunity',
-      'es': 'Inmunidad',
-      'it': 'Immunità',
-      'tr': 'Bağışıklık',
-      'ru': 'Иммунитет',
-      'zh': '免疫',
-      'hi': 'प्रतिरक्षा',
-      'pl': 'Odporność',
-      'ko': '면역',
-      'fr': 'Immunité',
-    },
-    'energy': {
-      'en': 'Energy',
-      'es': 'Energía',
-      'it': 'Energia',
-      'tr': 'Enerji',
-      'ru': 'Энергия',
-      'zh': '能量',
-      'hi': 'ऊर्जा',
-      'pl': 'Energia',
-      'ko': '에너지',
-      'fr': 'Énergie',
-    },
-    'muscle': {
-      'en': 'Muscle',
-      'es': 'Músculos',
-      'it': 'Muscoli',
-      'tr': 'Kas',
-      'ru': 'Мышцы',
-      'zh': '肌肉',
-      'hi': 'मांसपेशियां',
-      'pl': 'Mięśnie',
-      'ko': '근육',
-      'fr': 'Muscles',
-    },
-    'digestion': {
-      'en': 'Digestion',
-      'es': 'Digestión',
-      'it': 'Digestione',
-      'tr': 'Sindirim',
-      'ru': 'Пищеварение',
-      'zh': '消化',
-      'hi': 'पाचन',
-      'pl': 'Trawienie',
-      'ko': '소화',
-      'fr': 'Digestion',
-    },
-    'hair': {
-      'en': 'Hair',
-      'es': 'Cabello',
-      'it': 'Capelli',
-      'tr': 'Saç',
-      'ru': 'Волосы',
-      'zh': '头发',
-      'hi': 'बाल',
-      'pl': 'Włosy',
-      'ko': '모발',
-      'fr': 'Cheveux',
-    },
-  };
 
   static bool isBengali(String lang) => false;
 

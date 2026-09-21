@@ -73,15 +73,6 @@ Future<void> main() async {
   runApp(const FitForgeApp());
 }
 
-bool get _supabaseReady {
-  try {
-    Supabase.instance.client;
-    return true;
-  } catch (_) {
-    return false;
-  }
-}
-
 class FitForgeApp extends StatelessWidget {
   const FitForgeApp({super.key});
 

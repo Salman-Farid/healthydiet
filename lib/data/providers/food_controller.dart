@@ -30,18 +30,24 @@ class FoodController extends GetxController {
   final searchQuery = ''.obs;
   final sort = FoodSort.name.obs;
 
-  /// Heart first, then Skin — then the rest.
+  /// Fallback chips if Supabase is offline — matches organ catalog.
   static const _fallbackGoals = <FoodGoal>[
-    FoodGoal(slug: 'heart', label: 'Heart', emoji: '❤️', colorHex: '#EF4444', sortOrder: 1),
-    FoodGoal(slug: 'skin', label: 'Skin', emoji: '✨', colorHex: '#F472B6', sortOrder: 2),
-    FoodGoal(slug: 'eye', label: 'Eye', emoji: '👁️', colorHex: '#0EA5E9', sortOrder: 3),
-    FoodGoal(slug: 'brain', label: 'Brain', emoji: '🧠', colorHex: '#A78BFA', sortOrder: 4),
-    FoodGoal(slug: 'bones', label: 'Bones', emoji: '🦴', colorHex: '#F59E0B', sortOrder: 5),
-    FoodGoal(slug: 'immunity', label: 'Immunity', emoji: '🛡️', colorHex: '#22C55E', sortOrder: 6),
-    FoodGoal(slug: 'energy', label: 'Energy', emoji: '⚡', colorHex: '#FBBF24', sortOrder: 7),
-    FoodGoal(slug: 'muscle', label: 'Muscle', emoji: '💪', colorHex: '#8B5CF6', sortOrder: 8),
-    FoodGoal(slug: 'digestion', label: 'Digestion', emoji: '🌿', colorHex: '#34D399', sortOrder: 9),
-    FoodGoal(slug: 'hair', label: 'Hair', emoji: '💇', colorHex: '#60A5FA', sortOrder: 10),
+    FoodGoal(slug: 'brain', label: 'Brain', emoji: '🧠', colorHex: '#A78BFA', sortOrder: 1),
+    FoodGoal(slug: 'heart', label: 'Heart', emoji: '❤️', colorHex: '#EF4444', sortOrder: 2),
+    FoodGoal(slug: 'lungs', label: 'Lungs', emoji: '🫁', colorHex: '#38BDF8', sortOrder: 3),
+    FoodGoal(slug: 'kidneys', label: 'Kidneys', emoji: '🫘', colorHex: '#14B8A6', sortOrder: 4),
+    FoodGoal(slug: 'liver', label: 'Liver', emoji: '🫀', colorHex: '#F97316', sortOrder: 5),
+    FoodGoal(slug: 'bones', label: 'Bones', emoji: '🦴', colorHex: '#EAB308', sortOrder: 6),
+    FoodGoal(slug: 'eyes', label: 'Eyes', emoji: '👁️', colorHex: '#0EA5E9', sortOrder: 7),
+    FoodGoal(slug: 'teeth', label: 'Teeth & Gums', emoji: '🦷', colorHex: '#64748B', sortOrder: 8),
+    FoodGoal(slug: 'blood', label: 'Blood', emoji: '🩸', colorHex: '#DC2626', sortOrder: 9),
+    FoodGoal(slug: 'skin', label: 'Skin', emoji: '✨', colorHex: '#F472B6', sortOrder: 10),
+    FoodGoal(slug: 'hair', label: 'Hair & Scalp', emoji: '💇', colorHex: '#60A5FA', sortOrder: 11),
+    FoodGoal(slug: 'muscles', label: 'Muscles', emoji: '💪', colorHex: '#8B5CF6', sortOrder: 12),
+    FoodGoal(slug: 'immunity', label: 'Immune System', emoji: '🛡️', colorHex: '#22C55E', sortOrder: 13),
+    FoodGoal(slug: 'stomach', label: 'Stomach', emoji: '🍽️', colorHex: '#FBBF24', sortOrder: 14),
+    FoodGoal(slug: 'gut', label: 'Gut & Intestines', emoji: '🦠', colorHex: '#34D399', sortOrder: 15),
+    FoodGoal(slug: 'joints', label: 'Joints & Cartilage', emoji: '🦴', colorHex: '#2DD4BF', sortOrder: 24),
   ];
 
   @override
@@ -56,33 +62,12 @@ class FoodController extends GetxController {
       final repo = _repository;
       if (repo != null) {
         var g = await repo.fetchGoals();
-        // Force chip order: heart, skin first
-        g.sort((a, b) {
-          const order = [
-            'heart',
-            'skin',
-            'eye',
-            'brain',
-            'bones',
-            'immunity',
-            'energy',
-            'muscle',
-            'digestion',
-            'hair',
-          ];
-          final ai = order.indexOf(a.slug);
-          final bi = order.indexOf(b.slug);
-          if (ai >= 0 && bi >= 0) return ai.compareTo(bi);
-          if (ai >= 0) return -1;
-          if (bi >= 0) return 1;
-          return a.sortOrder.compareTo(b.sortOrder);
-        });
+        g.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
         goals.assignAll(g);
         foods.assignAll(await repo.fetchFoods());
       }
       if (goals.isEmpty) goals.assignAll(_fallbackGoals);
       applyFilters();
-      // Load real images in background (do not block UI).
       unawaitedEnrichVisible();
     } catch (_) {
       if (goals.isEmpty) goals.assignAll(_fallbackGoals);

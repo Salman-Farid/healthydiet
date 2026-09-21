@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 
 import '../../core/constants.dart';
 import '../../core/l10n.dart';
-import '../../data/models/food.dart';
 import '../../data/providers/food_controller.dart';
 import '../../data/providers/settings_controller.dart';
 import 'food_detail_screen.dart';
@@ -120,8 +119,8 @@ class _FoodLibraryScreenState extends State<FoodLibraryScreen> {
                               ),
                             ),
                           ),
-                          backgroundColor: color.withOpacity(0.08),
-                          selectedColor: color.withOpacity(0.22),
+                          backgroundColor: color.withValues(alpha: 0.08),
+                          selectedColor: color.withValues(alpha: 0.22),
                           side: BorderSide(
                             color: selected ? color : AppColors.border,
                           ),
@@ -214,7 +213,8 @@ class _FoodLibraryScreenState extends State<FoodLibraryScreen> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(18),
-                          border: Border.all(color: color.withOpacity(0.35)),
+                          border:
+                              Border.all(color: color.withValues(alpha: 0.35)),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -226,7 +226,8 @@ class _FoodLibraryScreenState extends State<FoodLibraryScreen> {
                                   url: url,
                                   height: double.infinity,
                                   fit: BoxFit.cover,
-                                  fallbackEmoji: food.emoji,
+                                  fallbackEmoji:
+                                      foodGoalEmoji(food.goalSlug),
                                 ),
                               ),
                             ),

@@ -244,7 +244,9 @@ class _TrainerSetupScreenState extends State<TrainerSetupScreen> {
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
                         color:
-                            selected ? color.withOpacity(0.15) : AppColors.surface,
+                            selected
+                                ? color.withValues(alpha: 0.15)
+                                : AppColors.surface,
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
                           color: selected ? color : AppColors.border,

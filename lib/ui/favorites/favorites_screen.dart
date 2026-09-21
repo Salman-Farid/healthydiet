@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../app/routes.dart';
 import '../../core/constants.dart';
 import '../../core/l10n.dart';
 import '../../data/providers/exercise_controller.dart';
 import '../../data/providers/settings_controller.dart';
+import '../exercise_detail/exercise_detail_screen.dart';
 import '../widgets/common.dart';
 import '../widgets/hero_routes.dart';
-import '../exercise_detail/exercise_detail_screen.dart';
 
 class FavoritesScreen extends StatelessWidget {
   const FavoritesScreen({super.key});
@@ -64,7 +63,8 @@ class FavoritesScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: AppColors.surface,
                           borderRadius: BorderRadius.circular(18),
-                          border: Border.all(color: color.withOpacity(0.35)),
+                          border:
+                              Border.all(color: color.withValues(alpha: 0.35)),
                         ),
                         child: Stack(
                           children: [

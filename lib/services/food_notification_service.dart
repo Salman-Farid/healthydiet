@@ -60,7 +60,7 @@ class FoodNotificationService {
       if (allowed) {
         await scheduleDaily(hour: 9, minute: 0);
         await prefs.setBool(_prefEnabled, true);
-        debugPrint('Food tips: scheduled ${_daysAhead} unique 9:00 AM tips');
+        debugPrint('Food tips: scheduled $_daysAhead unique 9:00 AM tips');
       } else {
         debugPrint('Food tips: notifications blocked in system settings');
       }
